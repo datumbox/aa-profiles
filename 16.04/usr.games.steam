@@ -1,0 +1,109 @@
+#include <tunables/global>
+
+# Modified version of https://github.com/mk-fg/apparmor-profiles/blob/master/profiles/usr.bin.steam
+
+#/usr/games/steam flags=(audit) {
+/usr/games/steam {
+  #include <abstractions/X>
+  #include <abstractions/audio>
+  #include <abstractions/base>
+  #include <abstractions/bash>
+  #include <abstractions/dbus-session>
+  #include <abstractions/fonts>
+  #include <abstractions/freedesktop.org>
+  #include <abstractions/nameservice>
+  #include <abstractions/nvidia>
+  #include <abstractions/p11-kit>
+  #include <abstractions/user-tmp>
+  #include <abstractions/fonts>
+  #include <abstractions/dbus-strict>
+  #include <abstractions/private-files-strict>
+
+  ptrace peer=/usr/games/steam,
+
+  deny /proc/scsi/scsi r,
+
+  /dev/nvidia-modeset rw,
+
+  # necessary for writing to sockets, etc.
+  owner /dev/shm/** rmw,
+  /{,var/}run/** rmkix,
+  /{,var/}run/shm/** wl,
+  /{,var/}run/uuidd/request w,
+
+  / r,
+  /bin/* rix,
+  /etc/fstab r,
+  /etc/gtk-3.0/* r,
+  /etc/lsb-release r,
+  /etc/magic r,
+  /etc/wgetrc r,
+  /etc/ld.so.preload r,
+
+  owner @{HOME}/ r,
+  owner @{HOME}/.config/gtk-3.0/** r,
+  owner @{HOME}/.local/share/ r,
+  owner @{HOME}/.local/share/Steam/ r,
+  owner @{HOME}/.local/share/Steam/** mrwkixl,
+  owner @{HOME}/.steampid rw,
+  owner @{HOME}/.steampath rw,
+  owner @{HOME}/.steam/ mrwkix,
+  owner @{HOME}/.steam/** mrwkix,
+  owner @{HOME}/.nv/* mrwk,
+  owner @{HOME}/.nv/** mrwk,
+  owner @{HOME}/.nv/**/ mrwk,
+  owner @{HOME}/@{XDG_DESKTOP_DIR}/ r,
+
+  # Don't Starve
+  owner @{HOME}/.klei/** mrwixkl,
+
+  /mnt/ r,
+  /media/*{,/} r,
+  owner /media/*/** rml,
+  owner /media/*/**/SteamLibrary/** rwkix,
+
+  /proc/@{pid}/auxv r,
+  /proc/@{pid}/** mwrk,
+  /proc/loadavg r,
+  /proc/*/fd/ r,
+  /proc/*/mem rw,
+  /proc/*/status r,
+  /proc/*/task/ r,
+  /proc/driver/nvidia/* r,
+  /proc/modules r,
+  /proc/version r,
+
+  /run/cups/printcap r,
+
+  /sys/bus/pci/devices r,
+  /sys/bus/pci/devices/ r,
+  /sys/devices/system/cpu/** r,
+  /sys/devices/system/node/** r,
+  /sys/devices/pci*/**/uevent r,
+  /sys/devices/platform/**/uevent r,
+  /sys/devices/pci*/**/{busnum,idvendor,idproduct,resource,irq} r,
+  /sys/devices/pci*/**/{vendor,device,class} r,
+  /sys/devices/system/clocksource/*/current_clocksource r,
+
+  /tmp/** mrwlk,
+  /tmp/w.*/ mrwk,
+  /tmp/w.*/* mrwk,
+  /tmp/w.*/** mrwk,
+  /tmp/w.*/**/ mrwk,
+  /tmp/w.*/*/ mrwk,
+
+  /usr/ r,
+  /usr/bin/* rix,
+  /usr/lib/ r,
+  /usr/lib{,32,64}/** mrix,
+  /lib/** mrix,
+  /usr/games/steam r,
+  /usr/share/file/magic.mgc r,
+  /usr/share/file/magic/ r,
+  /usr/share/nvidia-*/* r,
+  /usr/share/themes/** r,
+  /usr/share/zenity/* r,
+
+  /dev/tty rw,
+
+}
