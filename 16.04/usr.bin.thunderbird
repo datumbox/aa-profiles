@@ -46,6 +46,7 @@ profile thunderbird /usr/lib/thunderbird/thunderbird {
   owner /run/user/[0-9]*/dconf/user rw,
   owner @{HOME}/.config/gtk-3.0/bookmarks r,
   deny owner @{HOME}/.local/share/gvfs-metadata/* r,
+  owner /dev/shm/org.mozilla.ipc.[0-9]*.[0-9]* rw,
 
   # potentially extremely sensitive files
   audit deny @{HOME}/.gnupg/** mrwkl,
